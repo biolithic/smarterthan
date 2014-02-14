@@ -1,0 +1,356 @@
+<?php
+// to be commented later than 12-11-12, now time for bed
+// in action at http://andymartha.com/drupalcamp/smarterthan/play
+// module demonstrating the form api working with an unrelated-to-drupal database table
+
+
+function smarterthan_menu()
+{
+$items = array();
+$items['smarterthan/play'] = array(
+'title' => 'Play the smarter-than trivia game!',
+'page callback' => 'drupal_get_form',
+'page arguments' => array('smarterthan_form'),
+'access callback' => TRUE,
+'description' => 'My app recently got rejected from admission to the Apple Appstore, citing missing attributes.  App reviewers have an extremely difficult job, especially with the holiday season and all.  So I thought I would make a game for unbiased, average people to people to see if you can notice.  It is sort of like Wheres Waldo but more fun!  If some days you do not feel very smart, you can play this game and hopefully feel better about yourself.'
+);
+return $items;
+}
+
+function smarterthan_form_submit($form_id, $form_state, $form_values) {
+$apple = 0;
+$me = 0;
+if( $form_state['values']['question1'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question2'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question3'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question4'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question5'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question6'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question7'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question8'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question9'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question10'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question11'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $form_state['values']['question12'] == "apple")
+{
+$apple++;
+}
+else
+{
+$me++;
+}
+
+if( $apple > $me )
+{
+drupal_set_message(t('You would agree with the Apple reviewers with your scores of ' . $apple . ' for Apple and ' . $me . ' for the app passes the given complaints against it.' ));  
+}
+else
+{
+drupal_set_message(t('You would agree that the app passes the given complaints against it with your scores of ' . $apple . ' for Apple and ' . $me . ' for the app.' ));  
+}
+
+
+
+$nid = db_insert('smarterthan') // Table name no longer needs {}
+->fields(array(
+  'question1' => $form_state['values']['question1'],
+  'question2' => $form_state['values']['question2'],
+  'question3' => $form_state['values']['question3'],
+  'question4' => $form_state['values']['question4'],
+  'question5' => $form_state['values']['question5'],
+  'question6' => $form_state['values']['question6'],
+  'question7' => $form_state['values']['question7'],
+  'question8' => $form_state['values']['question8'],
+  'question9' => $form_state['values']['question9'],
+  'question10' => $form_state['values']['question10'],
+  'question11' => $form_state['values']['question11'],
+  'question12' => $form_state['values']['question12'],
+  'apple' => $apple,
+  'me' => $me,
+  'created' => REQUEST_TIME,
+))
+->execute();
+  drupal_set_message(t('Your form has been saved.' ));
+}
+
+function smarterthan_form($form, &$form_state) {
+  $form['question1'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div>My app recently got rejected from admission to the Apple Appstore, citing missing attributes.  App reviewers have an extremely difficult job, especially with the holiday season and all.  So I thought I would make a game for unbiased, average people to people to see if you can notice.  It is sort of like Wheres Waldo but more fun!  If some days you do not feel very smart, you can play this game and hopefully feel better about yourself.</div><div><img src="http://andymartha.com/images/screen1.png" align="left">&nbsp;&nbsp; Apple complains: We found the following issues with the user interface of your app: 1 - Screens were crowded...'),
+ //   '#markup' => t('<p><img src="http://andymartha.com/images/screen1.png" align="left">&nbsp;&nbsp; Apple complains: We found the following issues with the user interface of your app: 1 - Screens were crowded...</p>'),
+    '#options' => array(
+      'apple'   => t('Yes, the screen is crowded.'),
+      'me' => t('No, I can see and push what I want to push.'),
+    ),
+    '#title' => t('Is the screen crowded?  Can you find the tabs or what you are supposed to push to get to the next screen?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+  $form['question2'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen3.png" align="left">&nbsp;&nbsp; Apple complains: We found the following issues with the user interface of your app: 1 - ...and/or laid out in a way that made it difficult to complete tasks'),
+    '#options' => array(
+      'apple'   => t('Yes, it is difficult to understand what to push and the layout is difficult to understand.'),
+      'me' => t('No, at the top in the titlebar it tells me what to do.  Underneath are the options to press.  The layout is the exact same on each screen of the app.'),
+    ),
+    '#title' => t('Is the layout difficult to understand how to complete a task?'),
+   '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+  
+  $form['question3'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen4.png" align="left">&nbsp;&nbsp; Apple complains: Did not include iOS features.'),
+    '#options' => array(
+      'me'   => t('Yes, I see a black share button on the home screenshot.'),
+      'apple' => t('No, I do not see a share button on the home screenshot.'),
+    ),
+    '#title' => t('Do you see a Share button in the screenshot?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+    $form['question4'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen5.png" align="left">&nbsp;&nbsp; Apple complains: Did not include iOS features.'),
+    '#options' => array(
+      'me'   => t('Yes, that is built into my IOS device, so it is a feature of the phone.'),
+      'apple' => t('No, I can do that with my non-smartphones that can only text.'),
+    ),
+    '#title' => t('Is logging and sharing on Facebook an IOS feature?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+
+  $form['question5'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen4.png" align="left">&nbsp;&nbsp; Apple complains: Please note that the app does not have tabs as you mentioned in your appeal.'),
+    '#options' => array(
+      'me'   => t('Yes, I see big black buttons titled New Day and Share.'),
+      'apple' => t('No, I agree. The app does not have tabs titled New Day and Share.'),
+    ),
+    '#title' => t('Does the home screenshot contain tabs for New Day? and Share!'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+  $form['question6'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen9.png" align="left">&nbsp;&nbsp; Apple complains: Poor quality UI/layout/images.'),
+    '#options' => array(
+      'apple'   => t('Yes, poor quality logos and fuzzy menus.'),
+      'me' => t('No, actually everything is pretty sharp.'),
+    ),
+    '#title' => t('Does the app screenshot contain poor quality images?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );  
+  
+  $form['question7'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen9.png" align="left">&nbsp;&nbsp; Apple complains: Low contrast between colors/text on some rows maks it difficult to read.'),
+    '#options' => array(
+      'apple'   => t('Yes, parts of the app are hard to read and understand which brand is associated with what.'),
+      'me' => t('No, actually I get it with the black on Starbucks green, black on grey, and white on black and IOS devices have great resolution anyways.'),
+    ),
+    '#title' => t('Does the app screenshot contain poor quality images?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+  $form['question8'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen6.png" align="left">&nbsp;&nbsp; Apple complains: No way for user to set their own personal limit.'),
+    '#options' => array(
+      'apple'   => t('Yes, who cares what doctors and researchers say anyways.'),
+      'me' => t('No, actually I believe that the app is trying to help people understand what modern medical and nutritional limits have been agreed upon.'),
+    ),
+    '#title' => t('After reading this screenshot, is the purpose of the app to set personal limits?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+  $form['question9'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen7.png" align="left">&nbsp;&nbsp; Apple complains: No way for user to set their own personal limit.'),
+    '#options' => array(
+      'apple'   => t('Yes, who cares what doctors and researchers say anyways.'),
+      'me' => t('No, actually I believe that the app is trying to help people understand what modern medical and nutritional limits have been agreed upon.'),
+    ),
+    '#title' => t('After reading this screenshot, is the purpose of the app to set personal limits?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+  $form['question10'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen8.png" align="left">&nbsp;&nbsp; Apple complains: No way for user to set their own personal limit.'),
+    '#options' => array(
+      'apple'   => t('Yes, who cares what doctors and researchers say anyways.'),
+      'me' => t('No, actually I believe that the app is trying to help people understand what modern medical and nutritional limits have been agreed upon.'),
+    ),
+    '#title' => t('After reading this screenshot, is the purpose of the app to set personal limits?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+  $form['question11'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen4.png" align="left">&nbsp;&nbsp; Apple complains: No way to view current intake without first selecting another drink.'),
+    '#options' => array(
+      'me'   => t('Yes, I see current intake without first selecting another drink.'),
+      'apple' => t('No, there are not stats there!'),
+    ),
+    '#title' => t('Do you see current intake stats on this home screenshot?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+  );
+  
+ 
+  
+  $form['question12'] = array(
+    '#type' => 'radios',
+    '#prefix' => t('<div><img src="http://andymartha.com/images/screen2.png" align="left">&nbsp;&nbsp; Apple complains: They should also avoid being so complicated that people are confused about what the app does and how to use it.'),
+    '#options' => array(
+      'apple'   => t('Yes, there are so many buttons and things to tap and screens!'),
+      'me' => t('No, there are only 3 screens in the app.  Home screen/share/select brand, select product, select size'),
+    ),
+    '#title' => t('Do you believe that this app is overly complicated?'),
+    '#required' => TRUE,
+    '#suffix' => '<br clear="all"></div><br>&nbsp;<br>'
+);
+
+ 
+ $form['submit'] = array(
+  '#type' => 'submit' ,
+  '#value' => t('Save') , 
+);
+$result = db_query("SELECT * FROM {smarterthan} u  LIMIT 50");
+// Result is returned as a iterable object that returns a stdClass object on each iteration
+foreach ($result as $record)
+{
+$getapple = $record->apple;
+$getme = $record->me;
+$totalapple = 0;
+$totalme = 0;
+if($getapple > $getme)
+{
+$totalapple++;  
+}
+else
+{
+$totalme++;    
+}
+
+$question1 = $question1 + $record->question1;
+$question2 = $question2 + $record->question2;
+$question3 = $question3 + $record->question3;
+$question4 = $question4 + $record->question4;
+$question5 = $question5 + $record->question5;
+$question6 = $question6 + $record->question6;
+$question7 = $question7 + $record->question7;
+$question8 = $question8 + $record->question8;
+$question9 = $question9 + $record->question9;
+$question10 = $question10 + $record->question10;
+$question11 = $question11 + $record->question11;
+$question12 = $question12 + $record->question12;
+}
+
+
+$form['stuff'] = array(
+'#prefix' =>  t('<h2>Community Stats</h2><div>Votes for Apple:' . $totalapple . ' vs Votes for the App:' . $totalme),
+'#suffix' => '<p>After making this app, I personally believe that the reviewers have traits in their work of being lazy or dumb or untruthful or scared of the Apple religion.  This is why I am getting feedback from the general human community and crowdsourcing different opinions.  These are copied and pasted responses from Apple regarding guideline 10.6 on Dec 11, 2012 08:52 AM, and screenshots taken with Apple XCode of the reviewed app on a device.  If I am missing something and in the wrong, at least you know what you have to look out for when you develop your own apps.  Thanks and have a good day.</p></div><br>&nbsp;<br>'
+);
+  
+return $form;
+}
